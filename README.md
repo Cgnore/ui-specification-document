@@ -1,17 +1,63 @@
 # User Management Screen
 
-# Introduction
+## Introduction
+
+
 
 This is a document to define the specifications of the user management screen. This document provides:
-- **Overall:** Define the main purpose, goals of this page.
-- **Components:** Explain each component behaviours and what functions will be defined.
 
-# Overall
-- This page is designed to manage users in the platform. It will include features such as displaying the user table, manipulating the visibility of the user table by filtering and toggling, disabling the user without hard delete, adding a new user to the system and editing the user's information in the platform. These features will only be visible and usable for the "SuperAdmin" role. The "User Management Screen" will be on one page. 
+- **Overall:** Defines the main purpose, goals of this page.
 
-- When the page opens, the table will be displayed, the form will be displayed as empty, 'Hide Disabled User' toggle will be selected automatically, 'New User' button will be active and 'Save User' button will be disabled until the form is filled with the information of the user. While the the user information is loading from the database, in the table there should be an icon to show the user that the information is loading.
+- **Initial State:** Shows the initial status of the page's components.
 
-- For clear understanding of the initial page status check the flowchart below:
+- **Components:** Explains each component's behaviours and what functions will be defined.
+
+
+
+## Overall
+
+
+
+This page is designed to manage users in the platform. The "User Management Screen" will be on **one page**. It will include features and these features will **only be visible and usable** for the **"SuperAdmin"** role. These features are:
+
+
+
+-  Displaying the user table.
+
+-  Manipulating the visibility of the user table by filtering and toggling.
+
+-  Disabling the user without hard delete.
+
+-  Adding a new user to the system.
+
+-  Editing the user's information in the platform.
+
+
+
+## Initial State
+
+
+
+When the page opens:
+
+
+
+- The user table will be displayed.
+  
+- While the information of users is loading from the database, in the middle of the table there should be a 'spinner' icon to show the user that the information is loading.
+
+- The form will be displayed as empty.
+
+- 'Hide Disabled User' toggle will be selected by default.
+
+- 'New User' button will be active
+
+- 'Save User' button will be disabled until the form is filled with any user information.
+
+
+
+
+For clear understanding of the initial page status check the **flowchart** below:
 
 ```mermaid
 graph TD
@@ -44,19 +90,17 @@ graph TD
     UserActions --> ActionEdit[Click a User Row in Table - Edit/Disable User]
 
     %% Add New User Flow
-    ActionAdd --> DisableNewBtn1['New User' Button Becomes Disabled]
-    DisableNewBtn1 --> CheckFormFilled{Is Form Filled?}
+    ActionAdd --> CheckFormFilled{Is Form Filled With Any Info?}
     
     %% Edit Existing User Flow
     ActionEdit --> HighlightRow[Clicked Row is Highlighted]
     HighlightRow --> PopulateForm[Form Populates with User Data]
-    PopulateForm --> DisableNewBtn2['New User' Button Becomes Disabled]
-    DisableNewBtn2 --> EditOptions{Edit Actions}
+    PopulateForm --> EditOptions{Edit Actions}
     
     EditOptions --> ModifyInfo[Modify User Information]
     EditOptions --> ToggleEnabled[Toggle 'Enabled' Switch inside Form - Soft Delete/Activate]
     
-    ModifyInfo --> CheckChanges{Are Changes Made?}
+    ModifyInfo --> CheckChanges{Are There Any Changes Made?}
     ToggleEnabled --> CheckChanges
 
     %% Save Button Activation Logic
