@@ -82,16 +82,46 @@ graph TD
     InitLoading --> FetchDB[(Fetch Data from Database)]
     FetchDB --> ShowTable[Remove Loading Icon & Display User Table]
 
-    %% User Actions from Table
-    ShowTable --> UserActions{SuperAdmin Actions}
     
-    UserActions --> ActionFilter[Filter Table / Toggle Visibility]
-    UserActions --> ActionAdd[Start Filling Empty Form - Add New User]
-    UserActions --> ActionEdit[Click a User Row in Table - Edit/Disable User]
+```
 
-    %% Add New User Flow
-    ActionAdd --> CheckFormFilled{Is Form Filled With Any Info?}
-    
+## Components
+Details related to components
+### 1. Table
+
+### 1.1 Table Header
+
+```mermaid
+graph TD
+    %% User Actions from Table    
+    TableActions[Functions of The Table Header]
+
+    %% Filtering Sorting Visibility Of The Table Flow
+    subgraph Manipulating_Table [Manipulating Table View]
+      direction TB
+      IDFunnelShape[Click the Funnel Shape/ Arrows of the ID]
+      UserNameFunnelShape[Click the Funnel Shape/ Arrows of the User Name]
+      EmailFunnelShape[Click the Funnel Shape/ Arrows of the Email]
+      EnabledFunnelShape[Click the Funnel Shape/ Arrows of the Enabled]
+
+      IDFunnelShape --> IDClicked[Change the View of the Table by ID]
+      UserNameFunnelShape --> UserNameClicked[Change the View of the Table by User Name]
+      EmailFunnelShape --> EmailClicked[Change the View of the Table by Email]
+      EnabledFunnelShape --> EnabledClicked[Change the View of the Table by Enabled]
+    end
+
+    TableActions --> Manipulating_Table
+
+
+```
+### 1.2 Inside Table
+
+```mermaid
+
+graph TD
+     %% User Actions from Inside the Table    
+
+    InsideTable[Inside Table Actions] --> ActionEdit[Click a User Row in Table - Edit/Disable User]
     %% Edit Existing User Flow
     ActionEdit --> HighlightRow[Clicked Row is Highlighted]
     HighlightRow --> PopulateForm[Form Populates with User Data]
@@ -104,22 +134,38 @@ graph TD
     ToggleEnabled --> CheckChanges
 
     %% Save Button Activation Logic
-    CheckFormFilled -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
-    CheckChanges -- No --> KeepSaveDisabled
+    CheckChanges -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
     
-    CheckFormFilled -- Yes --> ActivateSave['Save User' Button Becomes Active]
-    CheckChanges -- Yes --> ActivateSave
+    CheckChanges -- Yes --> ActivateSave['Save User' Button Becomes Active]
 
     %% Save and Refresh Process
     ActivateSave --> ClickSave[Click 'Save User' Button]
     ClickSave --> UpdateDB[(Update Database)]
     
-    %% Return to initial state after updating
-    UpdateDB --> FetchDB
 ```
+### 2. Form
 
-# Components
-Details related to components
+```mermaid
+graph TD
+    
+
+    %% Add New User Flow
+    ActionAdd[Start Filling Empty Form - Add New User] --> CheckFormFilled{Is Form Filled With Any Info?}
+
+
+    %% Save Button Activation Logic
+    CheckFormFilled -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
+    
+    CheckFormFilled -- Yes --> ActivateSave['Save User' Button Becomes Active]
+
+    %% Save and Refresh Process
+    ActivateSave --> ClickSave[Click 'Save User' Button]
+    ClickSave --> UpdateDB[(Update Database)]
+    
+
+
+
+```
 Behavior of the page commponents
 
 **FEATURES**
