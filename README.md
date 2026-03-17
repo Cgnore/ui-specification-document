@@ -87,7 +87,7 @@ There are three units of the header. The units are:
 
 Detailed explanation of the New User Button will be explained [here.](#new-user)
 
-#### 1.2 Hide Disabled
+#### 1.2 Hide Disabled Checkbox
 - Right after the New User button, the Hide Disabled User Checkbox will come.
 - The text colour will be '#333333' hex code.
 - The initial state of the checkbox will be ticked.
@@ -118,6 +118,9 @@ The table will request and display the user information in a list row by row.
 In the header of the page, there will be a checkbox to hide disabled user from the view. 
 - If the user make the checkbox active, then the records of the disabled user will be unvisible.
 - If the user make the checkbox inactive, then all the data of the users will be shown in the table no matter of enable statue of the records.
+
+To move back to the header part of the document, click [here.](#12-hide-disabled-checkbox)
+
 
 The table consist of two main parts. The parts of the table are "Table Header" and "Table Body". More detailed explanation will be handed in below:
 
@@ -273,7 +276,7 @@ graph TD
     ActivateSave --> ClickSave[Click 'Save User' Button]
     ClickSave --> UpdateDB[(Update Database)]
 ```
-To to back to the header part of the document, click [here.](#13-save-user-button)
+To move back to the header part of the document, click [here.](#13-save-user-button)
 
 In the form, there will be four of empty boxes which gives ability to user to enter the data. These are
 
