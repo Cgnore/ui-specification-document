@@ -198,46 +198,46 @@ Each column, different details will be displayed.
 - The email details of the user will be located in the third column of the Table Body.
 - The fourth column will display the user Enable statue.
 
-  #### 2.2.1 Modifying User Information
+#### 2.2.1 Modifying User Information
+
+The table gives ability to the user to select one of the user by clicking once and change that user's records through the form. The process of the modification user's records are:
+
+- Select the appropriate user by clicking once.
+- The row of the selected user will be highlighted by changing the background of that row.
+- The background colour of that row will be '#BDD3E5' hexacode.
+- The form which is located in the right side of the table, will be populated with the records of the selected user.
+- When the end-user change any records of the selected user, the "Save User" Button will be active and clickable.
+- After the changes are made the user will click the save user button.
+- The database will be updated with new parameters of the selected user.
+- The Table Body will refresh and fetch the latest records from the Database.
+  <br><br>
+```mermaid
+
+  graph TD
+       %% User Actions from Inside the Table    
   
-  The table gives ability to the user to select one of the user by clicking once and change that user's records through the form. The process of the modification user's records are:
+      InsideTable[Inside Table Actions] --> ActionEdit[Click a User Row in Table - Edit/Disable User]
+      %% Edit Existing User Flow
+      ActionEdit --> HighlightRow[Clicked Row is Highlighted]
+      HighlightRow --> PopulateForm[Form Populates with User Data]
+      PopulateForm --> EditOptions{Edit Actions}
+      
+      EditOptions --> ModifyInfo[Modify User Information]
+      EditOptions --> ToggleEnabled[Toggle 'Enabled' Switch inside Form - Soft Delete/Activate]
+      
+      ModifyInfo --> CheckChanges{Are There Any Changes Made?}
+      ToggleEnabled --> CheckChanges
   
-  - Select the appropriate user by clicking once.
-  - The row of the selected user will be highlighted by changing the background of that row.
-  - The background colour of that row will be '#BDD3E5' hexacode.
-  - The form which is located in the right side of the table, will be populated with the records of the selected user.
-  - When the end-user change any records of the selected user, the "Save User" Button will be active and clickable.
-  - After the changes are made the user will click the save user button.
-  - The database will be updated with new parameters of the selected user.
-  - The Table Body will refresh and fetch the latest records from the Database.
-    <br><br>
-  ```mermaid
+      %% Save Button Activation Logic
+      CheckChanges -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
+      
+      CheckChanges -- Yes --> ActivateSave['Save User' Button Becomes Active]
   
-    graph TD
-         %% User Actions from Inside the Table    
-    
-        InsideTable[Inside Table Actions] --> ActionEdit[Click a User Row in Table - Edit/Disable User]
-        %% Edit Existing User Flow
-        ActionEdit --> HighlightRow[Clicked Row is Highlighted]
-        HighlightRow --> PopulateForm[Form Populates with User Data]
-        PopulateForm --> EditOptions{Edit Actions}
-        
-        EditOptions --> ModifyInfo[Modify User Information]
-        EditOptions --> ToggleEnabled[Toggle 'Enabled' Switch inside Form - Soft Delete/Activate]
-        
-        ModifyInfo --> CheckChanges{Are There Any Changes Made?}
-        ToggleEnabled --> CheckChanges
-    
-        %% Save Button Activation Logic
-        CheckChanges -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
-        
-        CheckChanges -- Yes --> ActivateSave['Save User' Button Becomes Active]
-    
-        %% Save and Refresh Process
-        ActivateSave --> ClickSave[Click 'Save User' Button]
-        ClickSave --> UpdateDB[(Update Database)]
-        
-    ```
+      %% Save and Refresh Process
+      ActivateSave --> ClickSave[Click 'Save User' Button]
+      ClickSave --> UpdateDB[(Update Database)]
+      
+  ```
 
 ### 3. Form
 
