@@ -245,12 +245,13 @@ The form will include empty boxes, opening list and checkbox. In these boxes, us
 
 In the header, there is two button to affect this section. The buttons functionality will be explained below more:
 <a id="new-user" name="new-user">&zwj;</a>
-To move back to the header part of the document, click [here.](#11-new-user-button)
 
 #### New User Button
 
 - The new user button will erase all the inputs of the form to initial value, which is empty.
 - The new user button always will be active to give the ability to end-user to clear the form.
+
+To move back to the header part of the document, click [here.](#11-new-user-button)
 <a id="save-user" name="save-user">&zwj;</a>
 #### Save User Button
 
