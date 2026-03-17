@@ -242,6 +242,7 @@ The form will include empty boxes, opening list and checkbox. In these boxes, us
 
 In the header, there is two button to affect this section. The buttons functionality will be explained below more:
 <a id="new-user" name="new-user">&zwj;</a>
+To move back to the header part of the document, click [here.](#11-new-user-button)
 
 #### New User Button
 
@@ -272,7 +273,7 @@ graph TD
     ActivateSave --> ClickSave[Click 'Save User' Button]
     ClickSave --> UpdateDB[(Update Database)]
 ```
-
+To to back to the header part of the document, click [here.](#13-save-user-button)
 
 In the form, there will be four of empty boxes which gives ability to user to enter the data. These are
 
