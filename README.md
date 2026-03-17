@@ -2,8 +2,6 @@
 
 ## Introduction
 
-
-
 This is a document to define the specifications of the user management screen. This document provides:
 
 - **Overall:** Defines the main purpose, goals of this page.
@@ -12,15 +10,9 @@ This is a document to define the specifications of the user management screen. T
 
 - **Components:** Explains each component's behaviours and what functions will be defined.
 
-
-
 ## Overall
 
-
-
 This page is designed to manage users in the platform. The "User Management Screen" will be on **one page**. It will include features and these features will **only be visible and usable** for the **"SuperAdmin"** role. These features are:
-
-
 
 -  Displaying the user table.
 
@@ -32,15 +24,9 @@ This page is designed to manage users in the platform. The "User Management Scre
 
 -  Editing the user's information in the platform.
 
-
-
 ## Initial State
 
-
-
 When the page opens:
-
-
 
 - The user table will be displayed.
   
@@ -53,9 +39,6 @@ When the page opens:
 - 'New User' button will be active
 
 - 'Save User' button will be disabled until the form is filled with any user information.
-
-
-
 
 For clear understanding of the initial page status check the **flowchart** below:
 
@@ -81,15 +64,19 @@ graph TD
     %% Fetching Data
     InitLoading --> FetchDB[(Fetch Data from Database)]
     FetchDB --> ShowTable[Remove Loading Icon & Display User Table]
-
-    
 ```
 
-## Components
-Details related to components
-### 1. Table
+## Page Features
 
-### 1.1 Table Header
+Page main features will be determined in this section. Page background will be '#ffffff' hex code. The page will consist of three main UI units. The units are labelled as "Header", "Table" and "Form" in this document. The details for each components will be given in below.
+
+### 1. Header
+
+The header background will be '#f5f5f5' hex code. The header of the page contains three units which they will be explained more in relevant sections below. The units of the header are ["+ New User"](#3-form) Button, "Hide/Disabled" Chekbox and "Save User" Button.
+
+### 2. Table
+
+### 2.1 Table Header
 
 ```mermaid
 graph TD
@@ -109,12 +96,9 @@ graph TD
       EmailFunnelShape --> EmailClicked[Change the View of the Table by Email]
       EnabledFunnelShape --> EnabledClicked[Change the View of the Table by Enabled]
     end
-
     TableActions --> Manipulating_Table
-
-
 ```
-### 1.2 Inside Table
+### 2.2 Inside Table
 
 ```mermaid
 
@@ -143,15 +127,14 @@ graph TD
     ClickSave --> UpdateDB[(Update Database)]
     
 ```
-### 2. Form
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+### 3. Form
+<a id="new-user" name="new-user">&zwj;</a>
+New button will be explained here more.
 ```mermaid
 graph TD
-    
-
     %% Add New User Flow
     ActionAdd[Start Filling Empty Form - Add New User] --> CheckFormFilled{Is Form Filled With Any Info?}
-
 
     %% Save Button Activation Logic
     CheckFormFilled -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
@@ -161,11 +144,8 @@ graph TD
     %% Save and Refresh Process
     ActivateSave --> ClickSave[Click 'Save User' Button]
     ClickSave --> UpdateDB[(Update Database)]
-    
-
-
-
 ```
+
 Behavior of the page commponents
 
 **FEATURES**
