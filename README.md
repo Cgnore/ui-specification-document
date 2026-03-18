@@ -84,6 +84,7 @@ The details for each components will be given in below.
 - The Header unit will be located on the top of the page.
 - The header background will be '#f5f5f5' hex code.
 - The header of the page contains three units which they will be explained more in related sections below. The space-between will be responsive.
+- The text in the header units will be bold. 
 
 There are three units of the header. The units are:
 
@@ -119,7 +120,7 @@ The table will display the user information in a list row by row.
 - The Table unit will be located on the left site on the page below the header.
 - Its height will stretch to fill the remaining screen height (with a vertical internal scroll if needed).
 - It will have 4 columns.
-- The columns will be separated by lines which have the colour of '#E5E5E5' hexacode.
+- The columns will be separated by lines which have the colour of '#E5E5E5' hex code.
 - Inside the table, the 'Segoe UI' text font will be used.
 <a id="hide-disabled-checkbox" name="hide-disabled-checkbox">&zwj;</a>
 
@@ -170,58 +171,55 @@ In each column of the header, there will be title and symbols.
 
 ### 2.2 Table Body
 
-- The Table Body will display the user informations.
+- The Table Body will display the user information.
 - The Table Body will be vertical overflow with a scrollbar.
-- The displayed informations in each row will be reflected the user information belongs to the title of the column.
+- The data which is displayed in each row will correspond to its column title.
 - The background of the Table Body will be '#FFFFFF' hex code.
 - The colour of the text in the Body will be '#333333' hex code.
-- The text in the header will be regular boldness.
+- The rows will be clickable. To inform user, the row background will be '#F5F5F5' hex code while hovering.
+- The text in the body will be regular boldness.
 
 Each column, different details will be displayed.
 - In the first column, the user ID will be placed right-aligned.
 - The second column will display the User Name by left-aligned.
 - The email details of the user will be located in the third column of the Table Body.
-- The fourth column will display the user Enable statue.
+- The fourth column will display the user Enable status.
 
 #### 2.2.1 Modifying User Information
 
 The table gives ability to the user to select one of the user by clicking once and change that user's records through the form. The process of the modification user's records are:
 
+
 - Select the appropriate user by clicking once.
 - The row of the selected user will be highlighted by changing the background of that row.
-- The background colour of that row will be '#BDD3E5' hexacode.
+- The background colour of that row will be '#BDD3E5' hex code.
 - The form which is located in the right side of the table, will be populated with the records of the selected user.
 - When the end-user change any records of the selected user, the "Save User" Button will be active and clickable.
 - After the changes are made the user will click the save user button.
-- The database will be updated with new parameters of the selected user.
-- The Table Body will refresh and fetch the latest records from the Database.
+- When changes made and saved succesfully, the Table refreshes (spinning icon displayed in the middle of the table with a message to inform the user about refreshing) to display the latest parameters and the selected row stays highlighted.
+
+To cancel the modifying function, highlighted row will be clickable. The cancel process is explained below:
+- When user hover the mouse on the highlighted row, the background of the row will be '#F5F5F5' hex code.
+- When user click the highlighted row, the background will be '#FFFFFF' hex code.
+- When the row is deselected the form will be cleared also. 
+
   <br><br>
 ```mermaid
-
-  graph TD
-       %% User Actions from Inside the Table    
-  
-      InsideTable[Inside Table Actions] --> ActionEdit[Click a User Row in Table - Edit/Disable User]
-      %% Edit Existing User Flow
-      ActionEdit --> HighlightRow[Clicked Row is Highlighted]
-      HighlightRow --> PopulateForm[Form Populates with User Data]
-      PopulateForm --> EditOptions{Edit Actions}
-      
-      EditOptions --> ModifyInfo[Modify User Information]
-      EditOptions --> ToggleEnabled[Toggle 'Enabled' Switch inside Form - Soft Delete/Activate]
-      
-      ModifyInfo --> CheckChanges{Are There Any Changes Made?}
-      ToggleEnabled --> CheckChanges
-  
-      %% Save Button Activation Logic
-      CheckChanges -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
-      
-      CheckChanges -- Yes --> ActivateSave['Save User' Button Becomes Active]
-  
-      %% Save and Refresh Process
-      ActivateSave --> ClickSave[Click 'Save User' Button]
-      ClickSave --> UpdateDB[(Update Database)]
-      
+graph TD
+    %% User Actions from Inside the Table    
+    ActionEdit([User Clicks a Row in the Table]) --> HighlightRow[Row Background Changes to Active State]
+    HighlightRow --> PopulateForm[Right Form Populates with Selected User's Data]
+    
+    PopulateForm --> FormInteraction{Does User Modify Any Data?}
+    
+    %% Save Button Activation Logic
+    FormInteraction -- No (Pristine State) --> KeepSaveDisabled['Save User' Button Remains Disabled]
+    FormInteraction -- Yes (Dirty State) --> ActivateSave['Save User' Button Becomes Enabled]
+    
+    %% Save and Refresh Process
+    ActivateSave --> ClickSave([User Clicks 'Save User' Button])
+    ClickSave --> ShowLoading[Show Loading Spinner on Table/Button]
+    ShowLoading --> RefreshTable[Table Refreshes with Updated Data & Row Remains Highlighted]
   ```
 
 ### 3. Form
