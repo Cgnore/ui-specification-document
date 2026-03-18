@@ -8,11 +8,11 @@ This is a document to define the specifications of the user management screen. T
 
 - **Initial State:** Shows the initial status of the page's components.
 
-- **Components:** Explains each component's behaviours and what functions will be defined.
+- **Components:** Explains each components and behaviours in detail.
 
 ## Overall
 
-This page is designed to manage users in the platform. The "User Management Screen" will be on **one page**. It will include features and these features will **only be visible and usable** for the **"SuperAdmin"** role. These features are:
+This page is designed to manage users in the platform. The "User Management Screen" will be on **one page**. It will include features such as:
 
 -  Displaying the user table.
 
@@ -28,9 +28,9 @@ This page is designed to manage users in the platform. The "User Management Scre
 
 When the page opens:
 
-- The user table will be displayed.
-  
-- While the information of users is loading from the database, in the middle of the table there should be a 'spinner' icon to show the user that the information is loading.
+- In table, while the information of users is loading from the database, in the middle of the table there should be a 'spinner' icon to show the user that the information is loading.
+
+- After fetching the records from the database table will be display the datas of user in ascending order by ID.
 
 - The form will be displayed as empty.
 
@@ -38,51 +38,60 @@ When the page opens:
 
 - 'New User' button will be active
 
-- 'Save User' button will be disabled until the form is filled with any user information.
+- 'Save User' button will be disabled until the form is filled with specific user information such as User Name, Phone, Email and User Roles. (_Assumption: Because of there is no specification in the task assignment, the given user information are assumed as mandatory to provide reliable system._)
 
 For clear understanding of the initial page status check the **flowchart** below:
 
 ```mermaid
 graph TD
-    %% Start and Authorization Check
-    Start([Navigate to User Management Screen]) --> AuthCheck{Is User SuperAdmin?}
-    AuthCheck -- No --> AccessDenied([Access Denied])
-    AuthCheck -- Yes --> PageInit[Initialize Page]
+    Start([User Navigates to User Management Screen]) --> InitState[Initialize UI States]
 
-    %% Initial Page Load State
-    subgraph Initial_Page_State [Initial Page State]
+    subgraph Default_Component_States [Default UI Component States]
         direction TB
-        InitLoading[Show Loading Icon in Table]
-        InitForm[Display Empty Form]
-        InitToggle['Hide Disabled User' Toggle Selected]
-        InitBtnNew['New User' Button Active]
-        InitBtnSave['Save User' Button Disabled]
+        Form[Right Panel: Form is Displayed Empty]
+        Toggle[Header: 'Hide Disabled User' Toggle is Checked]
+        BtnNew[Header: '+ New User' Button is Enabled]
+        BtnSave[Bottom: 'Save User' Button is Disabled]
+
     end
 
-    PageInit --> Initial_Page_State
+    InitState --> Default_Component_States
+    InitState --> TableLoading[Left Panel: Show Loading Spinner in Table Grid]
 
-    %% Fetching Data
-    InitLoading --> FetchDB[(Fetch Data from Database)]
-    FetchDB --> ShowTable[Remove Loading Icon & Display User Table]
+    TableLoading --> DataResponse{Data Fetching State}
+
+    DataResponse -- Success (Data Exists) --> RenderTable[Remove Spinner & Populate Table Rows]
+    DataResponse -- Success (No Data) --> EmptyTable[Remove Spinner & Show 'No Users Found' Empty State]
+    DataResponse -- Error --> ErrorState[Show Error Toast Notification & Empty Table]
+
+    RenderTable --> Ready([UI Ready for Interaction])
+    EmptyTable --> Ready
+    ErrorState --> Ready
 ```
 
 ## Page Features
-
-Page main features will be determined in this section. Page background will be '#ffffff' hex code. The page will consist of three main UI units. The units are labelled as "Header", "Table" and "Form" in this document. 
+(_Because of there is no specification about primary color etc., hex code will be used in this document_)
+Page main features will be determined in this section.
+- Page background will be '#ffffff' hex code.
+- The page will consist of three main UI units.
+- The units are labelled as "Header", "Table" and "Form" in this document.
+- The space-between units will be responsive.
 
 The details for each components will be given in below.
 
 ### 1. Header
 
+- The Header unit will be located on the top of the page.
 - The header background will be '#f5f5f5' hex code.
-- The header of the page contains three units which they will be explained more in related sections below.
+- The header of the page contains three units which they will be explained more in related sections below. The space-between will be responsive.
 
 There are three units of the header. The units are:
 
 #### 1.1 New User Button
 - The New User Button will be on the left side of the header.
-- The button backgorund will be '#2C74B3' hex code.
+- The button background will be '#2C74B3' hex code.
 - The text colour will be '#FFFFFF' hex code.
+- When the user hover the button, the background of the button will be '#20527D' hex code.
 - The initial state of the button will be active.
 
 Detailed explanation of the New User Button will be explained [here.](#new-user)
@@ -96,28 +105,29 @@ Detailed explanation of the Hide Disabled Checkbox will be explained [here.](#hi
 
 #### 1.3 Save User Button
 - The Save User Button will be on the right side of the header.
-- The button backgorund will be '#2C74B3' hex code.
+- The button background will be '#2C74B3' hex code when the button is active.
+- While the button is active if the user hover the button, the background of the button will be '#20527D' hex code.
 - The initial state of the button will be disabled.
+- While the button is disabled the background will be in '#CCCCCC' hex code and cursor will not be allowed.
 
 Detailed explanation of the Save User Button will be explained [here.](#save-user)
 
 ### 2. Table
 
-The table will request and display the user information in a list row by row. 
+The table will display the user information in a list row by row.
+
+- The Table unit will be located on the left site on the page below the header.
+- Its height will stretch to fill the remaining screen height (with a vertical internal scroll if needed).
 - It will have 4 columns.
-- The columns will be seperated by lines which have the colour of '#E5E5E5' hexacode.
-- Inside the table, the 'Segoe UI' text font will be using.
-- The Table sizes will be comprehensive design according to the page size.
-- The Table will cover fixed %40 percent of the page in the vertical part.
-- It will cover fixed %80 percent of the page by horizantally.
-- The table will located on the left bottom of the page.
+- The columns will be separated by lines which have the colour of '#E5E5E5' hexacode.
+- Inside the table, the 'Segoe UI' text font will be used.
 <a id="hide-disabled-checkbox" name="hide-disabled-checkbox">&zwj;</a>
 
 #### Hide/Disabled Checkbox
 
 In the header of the page, there will be a checkbox to hide disabled user from the view. 
-- If the user make the checkbox active, then the records of the disabled user will be unvisible.
-- If the user make the checkbox inactive, then all the data of the users will be shown in the table no matter of enable statue of the records.
+- If the user make the checkbox active, then the records of the disabled user will be invisible.
+- If the user make the checkbox inactive, then all the data of the users will be shown in the table no matter of enable status of the records.
 
 To move back to the header part of the document, click [here.](#12-hide-disabled-checkbox)
 
@@ -132,57 +142,32 @@ The Table Header will display the titles and features manipulating options to ta
 - The text in the header will be '#FFFFFF' hex code.
 - The text in the header will be bold. 
 
-In each column of the header, there will be title and symbols:
+In each column of the header, there will be title and symbols.
 
-#### 2.1.1 The First Column
-- There will be an 'ID' title with funnel shape and upside arrow.
-- Symbols are right-aligned and title will be left aligned.
-- The Funnel Shape will be the rightest. Arrow will come left to Funnel Shape.
-- When user click the upside arrow, the table order will be changed by ascending by the ID number of the user.
-- When the user click the funnel shape, there will be opening list, and give ability to the user to select which ID the user wants to select.
+#### 2.1.1 General Table Header Behaviours
 
-#### 2.1.2 The Second Column
-- There will be a 'User Name' title with funnel shape and upside/ downside arrows.
-- Symbols are right-aligned and title will be left aligned.
-- The Funnel Shape will be the rightest.
-- Arrows will come left to Funnel Shape.
-- When user click the upside/ downside arrow, the table order will be changed by ascending/ descending by the User Name letters according to the alphabetic order of the user.
-- When the user click the funnel shape, there will be opening list, and give ability to the user to select which User Name the user wants to select.
+##### Alignment Rules
+- The text of the header will always be left-aligned.
+- Icons always will be right-aligned.
 
-#### 2.1.3 The Third Column
-- There will be a 'Email' title with funnel shape and upside/ downside arrow.
-- Symbols are right-aligned and title will be left aligned.
-- The Funnel Shape will be the rightest. Arrows will come left to Funnel Shape.
-- When user click the upside/ downside arrow, the table order will be changed by ascending/ descending by the Email letters according to the alphabetic order of the user.
-- When the user click the funnel shape, there will be opening list, and give ability to the user to select which Email the user wants to select.
+##### Icon Alignment Rules
+- The Filter Icon will always be on right.
+- The Sort Icon will always be left side of the Filter Icon.
 
-#### 2.1.4 The Fourth Column
-- There will be a 'Enabled' title with funnel shape and upside/ downside arrow.
-- Symbols are right-aligned and title will be left aligned.
-- The Funnel Shape will be the rightest. Arrows will come left to Funnel Shape.
-- When user click the upside/ downside arrow, the table order will be changed by ascending/ descending by the enable statue of the user.
-- When the user click the funnel shape, there will be opening list, and give ability to the user to select enable statue of the user wants to select.
+##### Functions of The Icon When Interact
+- When user cilck the Filter Icon, there will be a dropdown list. This list gives the user the ability of selecting specific parameters to filter according column data. 
+- When user click the Sort Icon, the table vision will be changed by ascending/descening order in alphabetic or numerical(depending on the column type).
 
-```mermaid
-graph TD
-    %% User Actions from Table    
-    TableActions[Functions of The Table Header]
+##### Column Specifications
 
-    %% Filtering Sorting Visibility Of The Table Flow
-    subgraph Manipulating_Table [Manipulating Table View]
-      direction TB
-      IDFunnelShape[Click the Funnel Shape/ Arrows of the ID]
-      UserNameFunnelShape[Click the Funnel Shape/ Arrows of the User Name]
-      EmailFunnelShape[Click the Funnel Shape/ Arrows of the Email]
-      EnabledFunnelShape[Click the Funnel Shape/ Arrows of the Enabled]
+| Column Name | Sortable (Arrow Icon) | Filterable (Funnel Icon) | Data Type |
+| :--- | :---: | :---: | :--- |
+| **ID** | Yes | Yes | Numeric |
+| **User Name** | Yes | Yes | Alphabetic |
+| **Email** | Yes | Yes | Alphabetic |
+| **Enabled** | Yes | Yes | Boolean (Status) |
 
-      IDFunnelShape --> IDClicked[Change the View of the Table by ID]
-      UserNameFunnelShape --> UserNameClicked[Change the View of the Table by User Name]
-      EmailFunnelShape --> EmailClicked[Change the View of the Table by Email]
-      EnabledFunnelShape --> EnabledClicked[Change the View of the Table by Enabled]
-    end
-    TableActions --> Manipulating_Table
-```
+
 ### 2.2 Table Body
 
 - The Table Body will display the user informations.
@@ -294,7 +279,7 @@ After these input boxes, there will be a list selection box. Which is titled by:
   - The user will be able to change the highlighted role through the mouse point and through the up and down arrows in the keyboard.
 
 After the list selection box, there will be a checkbox for Enable or Disable the user statue. Which is titled by:
-- **Enabled**: The checkbox will allow the user to change the statue of the user to be active or passive.
+- **Enabled**: The checkbox will allow the user to change the statue of the user to be active or disabled.
   - The initial state for the checkbox is unselected.
   - If the end-user click the box, the statue of the user which is in the form will be change.
   - If the checkbox ticked, then the user statue will change as active.
