@@ -73,80 +73,69 @@ graph TD
 
 ### 2. Table
 
-The table will display the user information in a list row by row.
-
-- The Table unit will be located on the left site on the page below the header.
-- Its height will stretch to fill the remaining screen height (with a vertical internal scroll if needed).
-- It will have 4 columns.
-- The columns will be separated by lines which have the colour of '#E5E5E5' hex code.
-- Inside the table, the 'Segoe UI' text font will be used.
+**Table & Layout Attributes**
+- **Layout:** Located on the left side under the header, stretches to fill the remaining screen height (with internal vertical scrolling).
+- **Columns:** 4
+- **Styling:** Font: 'Segoe UI', Column Separator / Border Color: `#E5E5E5`
 <a id="hide-disabled-checkbox" name="hide-disabled-checkbox">&zwj;</a>
-
 #### Hide/Disabled Checkbox
 
-In the header of the page, there will be a checkbox to hide disabled user from the view. 
-- If the user make the checkbox active, then the records of the disabled user will be invisible.
-- If the user make the checkbox inactive, then all the data of the users will be shown in the table no matter of enable status of the records.
+Located in the header, this checkbox toggles the visibility of disabled user accounts in the table.
 
-To move back to the header part of the document, click [here.](#12-hide-disabled-checkbox)
+<details>
+  <summary><strong>Filter Logic: Hide Disabled Users</strong></summary>
+  
+  <br>
 
-
-The table consist of two main parts. The parts of the table are "Table Header" and "Table Body". More detailed explanation will be handed in below:
+  * **State:** Bound to a local state (e.g., `isHideDisabledActive`) with an **initial state = `true`**.
+  * **When `true` (Active):** The user array fetched from the database is filtered before rendering. Any user object containing an `isDisabled === true` (or equivalent) flag will not be rendered in the DOM.
+  * **When `false` (Inactive):** The complete user list is mapped and rendered directly without any filtering manipulation, showing all users regardless of their status.
+  
+  <br>
+  
+  [↑ Return to Header Components](#header-components)
+</details>
 
 ### 2.1 Table Header
 
-The Table Header will display the titles and features manipulating options to table view.
-- The Table Header will be sticky.
-- The background of the table header will be '#2C74B3' hex code.
-- The text in the header will be '#FFFFFF' hex code.
-- The text in the header will be bold. 
+The Table Header displays column titles and gives the user the ability to manipulate the view.
 
-In each column of the header, there will be title and symbols.
+**Styling & Layout:**
+- **Position:** `sticky` | **Top**
+- **Background:** `#2C74B3`
+- **Text:** `#FFFFFF` | **Bold**
 
-#### 2.1.1 General Table Header Behaviours
+> **Header Cell Layout:** Uses flexbox alignment. The header text is always left-aligned, while the action icons are right-aligned. The **Sort Icon** is always placed to the left of the **Filter Icon**.
 
-##### Alignment Rules
-- The text of the header will always be left-aligned.
-- Icons always will be right-aligned.
+**Icon Actions:**
+* **Sort Icon (`onClick`):** Toggles the table view between ascending / descending order (alphabetical or numerical, depending on the column's data type).
+* **Filter Icon (`onClick`):** Opens a dropdown menu. Allowing the user to select specific parameters to filter the respective column data.
 
-##### Icon Alignment Rules
-- The Filter Icon will always be on right.
-- The Sort Icon will always be left side of the Filter Icon.
-
-##### Functions of The Icon When Interact
-- When user cilck the Filter Icon, there will be a dropdown list. This list gives the user the ability of selecting specific parameters to filter according column data. 
-- When user click the Sort Icon, the table vision will be changed by ascending/descening order in alphabetic or numerical(depending on the column type).
-
-##### Column Specifications
+**Column Specifications:**
 
 | Column Name | Sortable (Arrow Icon) | Filterable (Funnel Icon) | Data Type |
 | :--- | :---: | :---: | :--- |
 | **ID** | Yes | Yes | Numeric |
 | **User Name** | Yes | Yes | Alphabetic |
 | **Email** | Yes | Yes | Alphabetic |
-| **Enabled** | Yes | Yes | Boolean (Status) |
-
+| **Enabled** | Yes | Yes | Boolean |
 
 ### 2.2 Table Body
 
-- The Table Body will display the user information.
 - The Table Body will be vertical overflow with a scrollbar.
-- The data which is displayed in each row will correspond to its column title.
 - The background of the Table Body will be '#FFFFFF' hex code.
 - The colour of the text in the Body will be '#333333' hex code.
-- The rows will be clickable. To inform user, the row background will be '#F5F5F5' hex code while hovering.
+- The rows will be clickable. The row background will be '#F5F5F5' hex code while hovering.
 - The text in the body will be regular boldness.
 
-Each column, different details will be displayed.
-- In the first column, the user ID will be placed right-aligned.
-- The second column will display the User Name by left-aligned.
-- The email details of the user will be located in the third column of the Table Body.
-- The fourth column will display the user Enable status.
+| Column Name | Alignment |
+| :--- |  :--- |
+| **ID** | Right |
+| **User Name** | Left |
+| **Email** | Left |
+| **Enabled** | Left |
 
-#### 2.2.1 Modifying User Information
-
-The table gives ability to the user to select one of the user by clicking once and change that user's records through the form. The process of the modification user's records are:
-
+#### 2.2.1 Row Selection & User Interaction
 
 - Select the appropriate user by clicking once.
 - The row of the selected user will be highlighted by changing the background of that row.
@@ -154,9 +143,9 @@ The table gives ability to the user to select one of the user by clicking once a
 - The form which is located in the right side of the table, will be populated with the records of the selected user.
 - When the end-user change any records of the selected user, the "Save User" Button will be active and clickable.
 - After the changes are made the user will click the save user button.
-- When changes made and saved succesfully, the Table refreshes (spinning icon displayed in the middle of the table with a message to inform the user about refreshing) to display the latest parameters and the selected row stays highlighted.
+- When changes made and saved succesfully, the Table refreshes (spinning icon displayed in the middle of the table with a message while refreshing) to display the latest parameters and the selected row stays highlighted.
 
-To cancel the modifying function, highlighted row will be clickable. The cancel process is explained below:
+- Highlighted row will be clickable.
 - When user hover the mouse on the highlighted row, the background of the row will be '#F5F5F5' hex code.
 - When user click the highlighted row, the background will be '#FFFFFF' hex code.
 - When the row is deselected the form will be cleared also. 
@@ -179,7 +168,14 @@ graph TD
     ClickSave --> ShowLoading[Show Loading Spinner on Table/Button]
     ShowLoading --> RefreshTable[Table Refreshes with Updated Data & Row Remains Highlighted]
   ```
-
+```mermaid
+    stateDiagram-v2
+    [*] --> UnselectedRow
+    UnselectedRow --> SelectedRow : onClick (Bg: #BDD3E5) \n Action: Populate Form
+    SelectedRow --> UnselectedRow : onClick (Bg: #FFFFFF) \n Action: Clear Form
+    SelectedRow --> Updating : Form Changed -> Save Clicked
+    Updating --> SelectedRow : API Success \n Action: Table Refresh (Spinner)
+```
 ### 3. Form
 
 The form will include input fields, dropdown and checkbox. In these fields, user will be able to enter various user information to save the user information to the system through the form. 
