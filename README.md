@@ -1,18 +1,6 @@
 # User Management Screen
 
-## Introduction
-
-This is a document to define the specifications of the user management screen. This document provides:
-
-- **Overall:** Defines the main purpose, goals of this page.
-
-- **Initial State:** Shows the initial status of the page's components.
-
-- **Components:** Explains each components and behaviours in detail.
-
 ## Overall
-
-This page is designed to manage users in the platform. The "User Management Screen" will be on **one page**. It will include features such as:
 
 -  Displaying the user table.
 
@@ -68,6 +56,41 @@ graph TD
     EmptyTable --> Ready
     ErrorState --> Ready
 ```
+## Page Features
+
+This section defines the core layout, styling, and structural components of the page. *(Hex codes are used as primary color specifications).*
+
+**Global Styling:**
+- **Page Background:** `#ffffff`
+- **Spacing:** Responsive `space-between` applied between all main units.
+
+---
+
+### 1. Component Structure
+
+Below is the top-level component hierarchy for the layout. The page consists of three main UI units.
+
+```jsx
+<UserManagementPage>
+  <Header />       {/* Background: #f5f5f5 | Font-weight: bold | Contains 3 sub-units */}
+  <UserTable />
+  <UserForm />
+</UserManagementPage>
+```
+
+---
+
+### 2. Initial States & Rules
+
+The table below defines the default states, visual behaviors, and specific validation/API rules for the core components upon initial load.
+
+| Component | Initial State | Notes / API Rules |
+| :--- | :--- | :--- |
+| **Header Sub-units** | Visible | Text must be **bold**. Responsive spacing applied between the 3 sub-units. |
+| **User Table** | `[]` (Empty) / Loading | Fetches initial user list from API on mount. |
+| **User Form Fields** | Empty / Untouched | Default state for all input fields. Validation triggers on user interaction. |
+| **Save User Button** | Disabled | Requires *Username*, *Phone*, *Email*, and *Roles* to be filled and valid. |
+
 
 ## Page Features
 (_Because of there is no specification about primary color etc., hex code will be used in this document_)
