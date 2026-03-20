@@ -38,7 +38,7 @@ When the page opens:
 
 - 'New User' button will be active
 
-- 'Save User' button will be disabled until the form is filled with specific user information such as User Name, Phone, Email and User Roles. (_Assumption: Because of there is no specification in the task assignment, the given user information are assumed as mandatory to provide reliable system._)
+- 'Save User' button will be disabled until the form is filled with specific user information such as User Name, Phone, Email and User Roles. <a id="assumption" name="assumption">&zwj;</a>(_Assumption: Because of there is no specification in the task assignment, the given user information are assumed as mandatory to provide reliable system._)
 
 For clear understanding of the initial page status check the **flowchart** below:
 
@@ -224,9 +224,9 @@ graph TD
 
 ### 3. Form
 
-The form will include empty boxes, opening list and checkbox. In these boxes, user will be able to enter various user information to save the user information to the system through the form. 
+The form will include input fields, dropdown and checkbox. In these fields, user will be able to enter various user information to save the user information to the system through the form. 
 
-In the header, there is two button to affect this section. The buttons functionality will be explained below more:
+In the header, there are two buttons to affect this section. The buttons functionality are explained below more:
 <a id="new-user" name="new-user">&zwj;</a>
 
 #### New User Button
@@ -238,50 +238,29 @@ To move back to the header part of the document, click [here.](#11-new-user-butt
 <a id="save-user" name="save-user">&zwj;</a>
 #### Save User Button
 
-- The save user button will be active if the form filled with any user information.
-- Clicking the save user button will send the entered information to the database.
-- Save user button will listen database response.
-- If the parameters have saved to the database, the form will be cleaned.
-- If saving response from the database is saying the saving process has failed, then the form will be stayed with that info and give the end-user an error message to explain and make user aware of that error.
-
-Here is a brief explanation of what is user actions and how the system should response to the actions of the end-user. There is the flowchart:
-
-```mermaid
-graph TD
-    %% Add New User Flow
-    ActionAdd[Start Filling Empty Form - Add New User] --> CheckFormFilled{Is Form Filled With Any Info?}
-
-    %% Save Button Activation Logic
-    CheckFormFilled -- No --> KeepSaveDisabled['Save User' Button Remains Disabled]
-    
-    CheckFormFilled -- Yes --> ActivateSave['Save User' Button Becomes Active]
-
-    %% Save and Refresh Process
-    ActivateSave --> ClickSave[Click 'Save User' Button]
-    ClickSave --> UpdateDB[(Update Database)]
-```
+- The save user button will be active if the form filled with mandatory fields.
+- Clicking the save user button will trigger the save process.
+- While the saving process is continue, the form inputs will be disabled and the status of the button will turn disabled and a spinning icon will displayed in the middle of the button.
+- If the parameters are saved successfully (according to the system response), the form will be cleaned.
+- If the saving process has succeed, then form will be cleared and a toast success message will appear to make sure the user that the process is done successfully.
+- If saving process has failed due to API response, then the form will be stayed with the last inputs and a toast error message will appear to explain and make user aware of that error.
+- 
 To move back to the header part of the document, click [here.](#13-save-user-button)
 
-In the form, there will be four of empty boxes which gives ability to user to enter the data. These are
+In the form, there will be four input fields whicil allows the user to enter data with max 255 characters. There will be a '*' sign in mandatory fields (Username, Phone, Email, User Roles according to the [assumption](#assumption)).
 
-- **Username**: The text box which will allow user to enter username.
-- **Display Name**: The text box which will allow the end user to enter the name which will be displayed
-- **Phone**: The input box which will allow the end-user to enter only digits.
-- **Email**: The input box which will allow the end-user to fill the user's email adress. The allowed form will be '?@?'
-
-After these input boxes, there will be a list selection box. Which is titled by:
-- **User Roles**: Give the ability to user by clicking on that box there is an opening list of roles. These roles are 'Guest', 'Admin' and 'SuperAdmin'.
-  - The initial state of the list box is showing a message to user which is 'Select user roles...'
-  - When user click the box, the list of roles will be opened.
-  - The initial state for the first opening of the list is 'Guest' option is highlighted.
+- **Username (*)**: Text input.
+- **Display Name**: Text input.
+- **Phone (*)**: Numeric input. Only digits and the '+' sign allowed.
+- **Email (*)**: Text input. Standard email validation rules have been applied.
+- **User Roles (*)**: Dropdown with availible roles ('Guest', 'Admin' and 'SuperAdmin')
+  - The initial state of the dropdown is showing a message to user which is 'Select user roles...'
+  - When user click the box, the roles dropdown will be opened.
+  - The initial state for the first opening of the dropdown, the 'Guest' option will be highlighted.
   - The user will be able to change the highlighted role through the mouse point and through the up and down arrows in the keyboard.
-
-After the list selection box, there will be a checkbox for Enable or Disable the user statue. Which is titled by:
-- **Enabled**: The checkbox will allow the user to change the statue of the user to be active or disabled.
-  - The initial state for the checkbox is unselected.
-  - If the end-user click the box, the statue of the user which is in the form will be change.
-  - If the checkbox ticked, then the user statue will change as active.
-  - If the checkbox is not selected, then the user statue is remains disabled.
+- **Enabled**: The checkbox will allow the user to change the status of the user to be active or disabled.
+  - Initial State: Unchecked
+  - Interaction: Ticked = Active, Unticked = Disabled. 
 
 
 
