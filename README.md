@@ -1,34 +1,27 @@
 # User Management Screen
 
-## Overall
+## 1) Core Features
 
--  Displaying the user table.
+-  User List.
 
--  Manipulating the visibility of the user table by filtering and toggling.
+-  Filtering/Toggling the List.
 
--  Disabling the user without hard delete.
+-  User Creation & Modification by Form.
 
--  Adding a new user to the system.
+## 2) Initial State
 
--  Editing the user's information in the platform.
+When the page opens, the components will be rendered with the following default states and rules:
 
-## Initial State
+| Component | Initial State | Details / Validation |
+| :--- | :--- | :--- |
+| **User Table (Loading)** | Displays Spinner | A spinner icon is shown in the middle of the table. |
+| **User Table (Loaded)** | Ascending Order | Once loaded, the table displays user data ordered by ID in ascending order by default. |
+| **User Form** | Empty | All input fields in the form are completely empty. |
+| **'Hide Disabled User' Toggle** | Ticked | Disabled users hid by default. |
+| **'New User' Button** | Active | Ready to be interacted. |
+| **'Save User' Button** | Disabled | Remains disabled until *User Name, Phone, Email,* and *User Roles* are filled. <br><br><a id="assumption" name="assumption">&zwj;</a>*(_Assumption: Because of there is no specification in the task assignment, the given user information are assumed as mandatory to provide reliable system._)* |
 
-When the page opens:
-
-- In table, while the information of users is loading from the database, in the middle of the table there should be a 'spinner' icon to show the user that the information is loading.
-
-- After fetching the records from the database table will be display the datas of user in ascending order by ID.
-
-- The form will be displayed as empty.
-
-- 'Hide Disabled User' toggle will be selected by default.
-
-- 'New User' button will be active
-
-- 'Save User' button will be disabled until the form is filled with specific user information such as User Name, Phone, Email and User Roles. <a id="assumption" name="assumption">&zwj;</a>(_Assumption: Because of there is no specification in the task assignment, the given user information are assumed as mandatory to provide reliable system._)
-
-For clear understanding of the initial page status check the **flowchart** below:
+### Initial State Flowchart
 
 ```mermaid
 graph TD
@@ -56,85 +49,27 @@ graph TD
     EmptyTable --> Ready
     ErrorState --> Ready
 ```
-## Page Features
 
-This section defines the core layout, styling, and structural components of the page. *(Hex codes are used as primary color specifications).*
+## 3) Page Features
 
-**Global Styling:**
 - **Page Background:** `#ffffff`
-- **Spacing:** Responsive `space-between` applied between all main units.
-
----
-
-### 1. Component Structure
-
-Below is the top-level component hierarchy for the layout. The page consists of three main UI units.
-
-```jsx
-<UserManagementPage>
-  <Header />       {/* Background: #f5f5f5 | Font-weight: bold | Contains 3 sub-units */}
-  <UserTable />
-  <UserForm />
-</UserManagementPage>
-```
-
----
-
-### 2. Initial States & Rules
-
-The table below defines the default states, visual behaviors, and specific validation/API rules for the core components upon initial load.
-
-| Component | Initial State | Notes / API Rules |
-| :--- | :--- | :--- |
-| **Header Sub-units** | Visible | Text must be **bold**. Responsive spacing applied between the 3 sub-units. |
-| **User Table** | `[]` (Empty) / Loading | Fetches initial user list from API on mount. |
-| **User Form Fields** | Empty / Untouched | Default state for all input fields. Validation triggers on user interaction. |
-| **Save User Button** | Disabled | Requires *Username*, *Phone*, *Email*, and *Roles* to be filled and valid. |
-
-
-## Page Features
-(_Because of there is no specification about primary color etc., hex code will be used in this document_)
-Page main features will be determined in this section.
-- Page background will be '#ffffff' hex code.
-- The page will consist of three main UI units.
-- The units are labelled as "Header", "Table" and "Form" in this document.
-- The space-between units will be responsive.
-
-The details for each components will be given in below.
+- **Layout:** Consists of three main UI units ('Header', 'Form', and 'Table').
+- **Spacing:** The space-between units will be responsive.
 
 ### 1. Header
 
-- The Header unit will be located on the top of the page.
-- The header background will be '#f5f5f5' hex code.
-- The header of the page contains three units which they will be explained more in related sections below. The space-between will be responsive.
-- The text in the header units will be bold. 
+- **Position:** Located on the top of the page.
+- **Background:** `#f5f5f5`
+- **Text Features:** All text in the header units will be **bold**.
+- **Layout:** Contains three sub-units with responsive space-between.
 
-There are three units of the header. The units are:
+#### Header Components
 
-#### 1.1 New User Button
-- The New User Button will be on the left side of the header.
-- The button background will be '#2C74B3' hex code.
-- The text colour will be '#FFFFFF' hex code.
-- When the user hover the button, the background of the button will be '#20527D' hex code.
-- The initial state of the button will be active.
-
-Detailed explanation of the New User Button will be explained [here.](#new-user)
-
-#### 1.2 Hide Disabled Checkbox
-- Right after the New User button, the Hide Disabled User Checkbox will come.
-- The text colour will be '#333333' hex code.
-- The initial state of the checkbox will be ticked.
-
-Detailed explanation of the Hide Disabled Checkbox will be explained [here.](#hide-disabled-checkbox)
-
-#### 1.3 Save User Button
-- The Save User Button will be on the right side of the header.
-- The button background will be '#2C74B3' hex code when the button is active.
-- While the button is active if the user hover the button, the background of the button will be '#20527D' hex code.
-- The initial state of the button will be disabled.
-- While the button is disabled the background will be in '#CCCCCC' hex code and cursor will not be allowed.
-
-Detailed explanation of the Save User Button will be explained [here.](#save-user)
+| Component | Position | Initial State | Background (Default/Hover/Disabled) | Text Color | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **New User Button** | Left | Active | `#2C74B3` / `#20527D` / - | `#FFFFFF` | See detailed explanation [here.](#new-user) |
+| **Hide Disabled Checkbox** | Middle (Next to New User) | Ticked | - | `#333333` | See detailed explanation [here.](#hide-disabled-checkbox) |
+| **Save User Button** | Right | Disabled | `#2C74B3` / `#20527D` / `#CCCCCC` | - | `cursor: not-allowed` when disabled. See detailed explanation [here.](#save-user) |
 
 ### 2. Table
 
