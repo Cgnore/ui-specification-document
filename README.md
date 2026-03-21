@@ -1,15 +1,11 @@
 # User Management Screen
 
 ## 1) Core Features
-
 -  User List.
-
 -  Filtering/Toggling the List.
-
 -  User Creation & Modification by Form.
 
 ## 2) Initial State
-
 When the page opens, the components will be rendered with the following default states and rules:
 
 | Component | Initial State | Details / Validation |
@@ -122,99 +118,81 @@ The Table Header displays column titles and gives the user the ability to manipu
 
 ### 2.2 Table Body
 
-- The Table Body will be vertical overflow with a scrollbar.
-- The background of the Table Body will be '#FFFFFF' hex code.
-- The colour of the text in the Body will be '#333333' hex code.
-- The rows will be clickable. The row background will be '#F5F5F5' hex code while hovering.
-- The text in the body will be regular boldness.
+**Styling & Layout:**
+- **Background (Default/Hover):** `#FFFFFF` / `#F5F5F5` 
+- **Text:** `#333333` | **Regular**
+- **Behaviour:** Clickable
+- **Scrolling:** Within a vertical scroll.
 
-| Column Name | Alignment |
+| Column Name | Alignment | 
 | :--- |  :--- |
 | **ID** | Right |
 | **User Name** | Left |
 | **Email** | Left |
 | **Enabled** | Left |
 
+
 #### 2.2.1 Row Selection & User Interaction
 
-- Select the appropriate user by clicking once.
-- The row of the selected user will be highlighted by changing the background of that row.
-- The background colour of that row will be '#BDD3E5' hex code.
-- The form which is located in the right side of the table, will be populated with the records of the selected user.
-- When the end-user change any records of the selected user, the "Save User" Button will be active and clickable.
-- After the changes are made the user will click the save user button.
-- When changes made and saved succesfully, the Table refreshes (spinning icon displayed in the middle of the table with a message while refreshing) to display the latest parameters and the selected row stays highlighted.
-
-- Highlighted row will be clickable.
-- When user hover the mouse on the highlighted row, the background of the row will be '#F5F5F5' hex code.
-- When user click the highlighted row, the background will be '#FFFFFF' hex code.
-- When the row is deselected the form will be cleared also. 
-
-  <br><br>
-```mermaid
-graph TD
-    %% User Actions from Inside the Table    
-    ActionEdit([User Clicks a Row in the Table]) --> HighlightRow[Row Background Changes to Active State]
-    HighlightRow --> PopulateForm[Right Form Populates with Selected User's Data]
-    
-    PopulateForm --> FormInteraction{Does User Modify Any Data?}
-    
-    %% Save Button Activation Logic
-    FormInteraction -- No (Pristine State) --> KeepSaveDisabled['Save User' Button Remains Disabled]
-    FormInteraction -- Yes (Dirty State) --> ActivateSave['Save User' Button Becomes Enabled]
-    
-    %% Save and Refresh Process
-    ActivateSave --> ClickSave([User Clicks 'Save User' Button])
-    ClickSave --> ShowLoading[Show Loading Spinner on Table/Button]
-    ShowLoading --> RefreshTable[Table Refreshes with Updated Data & Row Remains Highlighted]
-  ```
 ```mermaid
     stateDiagram-v2
     [*] --> UnselectedRow
-    UnselectedRow --> SelectedRow : onClick (Bg: #BDD3E5) \n Action: Populate Form
-    SelectedRow --> UnselectedRow : onClick (Bg: #FFFFFF) \n Action: Clear Form
+    UnselectedRow --> SelectedRow : onClick (Bg: #BDD3E5) | Action: Populate Form
+    SelectedRow --> UnselectedRow : onClick (Bg: #FFFFFF) | Action: Clear Form
     SelectedRow --> Updating : Form Changed -> Save Clicked
-    Updating --> SelectedRow : API Success \n Action: Table Refresh (Spinner)
+    Updating --> SelectedRow : API Succes | Action: Table Refresh (Spinner)
+    Updating --> FailedMessage : API Failed | Action: Form Stays Last Input
+    FailedMessage : Toast Error Message
 ```
-### 3. Form
+#### Additional UI Events
 
-The form will include input fields, dropdown and checkbox. In these fields, user will be able to enter various user information to save the user information to the system through the form. 
+- **Event:** `onFormChange` ➔ **State Change:** "Save User" button state changes from disabled to active ➔ **Trigger:** Button becomes clickable.
+- **Event:** `onSaveSuccess` ➔ **State Change:** Spinner displays in the middle of the table with an informational message ➔ **Trigger:** Informs user that latest parameters are loading.
+- **Event:** `onHover` ➔ **State Change:** Row Background becomes `#F5F5F5` ➔ **Trigger:** Visually indicates to the user that the row can be deselected.
 
-In the header, there are two buttons to affect this section. The buttons functionality are explained below more:
-<a id="new-user" name="new-user">&zwj;</a>
+### 3. Form Schema & Validation
+<details>
+  <summary><strong>New User Button</strong></summary><a id="new-user" name="new-user">&zwj;</a>
+  
+  <br>
 
-#### New User Button
+  * **State:** Always **Active** to ensure the end-user can clear the form at any time.
+  * **Action (`onClick` / `onReset`):** Clears all form fields, strictly resetting them to their **Initial States**.
 
-- The new user button will erase all the inputs of the form to initial value, which is empty.
-- The new user button always will be active to give the ability to end-user to clear the form.
+  [↑ Return to Header: New User Button](#11-new-user-button)
+  <br>
+</details>
+<details>
+  <summary><strong>Save User Button & Submission Lifecycle</strong></summary><a id="save-user" name="save-user">&zwj;</a>
+  <br>
+The "Save User" button triggers submission process for creating new user.
 
-To move back to the header part of the document, click [here.](#11-new-user-button)
-<a id="save-user" name="save-user">&zwj;</a>
-#### Save User Button
+  * **1. Active State:** The button becomes **Active** only when all mandatory form fields are filled properly.
+  * **2. Submitting:** Triggered `onClick`.
+      * **UI State:** All form inputs and the Save button become `disabled` to prevent multiple submissions.
+      * **Feedback:** A spinner icon is displayed in the center of the button.
+  * **3. Success:** * **Condition:** API returns a success response.
+      * **UI State:** The form is cleared completely.
+      * **Feedback:** A success toast message appears.
+  * **4. Error:**
+      * **Condition:** API returns an error response.
+      * **UI State:** The form is NOT cleared; it stays with the user's last inputs.
+      * **Feedback:** An error toast message appears.
+  
+  [↑ Return to Header: Save User Button](#13-save-user-button)
+  <br>
+</details>
 
-- The save user button will be active if the form filled with mandatory fields.
-- Clicking the save user button will trigger the save process.
-- While the saving process is continue, the form inputs will be disabled and the status of the button will turn disabled and a spinning icon will displayed in the middle of the button.
-- If the parameters are saved successfully (according to the system response), the form will be cleaned.
-- If the saving process has succeed, then form will be cleared and a toast success message will appear to make sure the user that the process is done successfully.
-- If saving process has failed due to API response, then the form will be stayed with the last inputs and a toast error message will appear to explain and make user aware of that error.
-- 
-To move back to the header part of the document, click [here.](#13-save-user-button)
+**Global Rule:** All text inputs have a max-length of 255 characters unless specified otherwise. A `*` sign will be used to indicate mandatory fields (according to the [assumption](#assumption)).
 
-In the form, there will be four input fields whicil allows the user to enter data with max 255 characters. There will be a '*' sign in mandatory fields (Username, Phone, Email, User Roles according to the [assumption](#assumption)).
-
-- **Username (*)**: Text input.
-- **Display Name**: Text input.
-- **Phone (*)**: Numeric input. Only digits and the '+' sign allowed.
-- **Email (*)**: Text input. Standard email validation rules have been applied.
-- **User Roles (*)**: Dropdown with availible roles ('Guest', 'Admin' and 'SuperAdmin')
-  - The initial state of the dropdown is showing a message to user which is 'Select user roles...'
-  - When user click the box, the roles dropdown will be opened.
-  - The initial state for the first opening of the dropdown, the 'Guest' option will be highlighted.
-  - The user will be able to change the highlighted role through the mouse point and through the up and down arrows in the keyboard.
-- **Enabled**: The checkbox will allow the user to change the status of the user to be active or disabled.
-  - Initial State: Unchecked
-  - Interaction: Ticked = Active, Unticked = Disabled. 
+| Field Name | Type | Required | Default State | Validation / Notes |
+| :--- | :--- | :---: | :--- | :--- |
+| **Username** | Text Input | Yes | Empty | - |
+| **Display Name** | Text Input | No | Empty | - |
+| **Phone** | Numeric Input | Yes | Empty | Only digits and the `+` sign are allowed. |
+| **Email** | Text Input | Yes | Empty | Standard email validation rules apply. |
+| **User Roles** | Dropdown | Yes | `'Select user roles...'` | Options: `'Guest'`, `'Admin'`, `'SuperAdmin'`. In the first opening, the `'Guest'` option is highlighted. |
+| **Enabled** | Checkbox | No | Unchecked | Interaction: Ticked = Active, Unticked = Disabled. |
 
 
 
