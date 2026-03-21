@@ -183,7 +183,7 @@ The "Save User" button triggers submission process for creating new user.
   <br>
 </details>
 
-**Global Rule:** All text inputs have a max-length of 255 characters unless specified otherwise. A `*` sign will be used to indicate mandatory fields (according to the [assumption](#assumption)).
+**Global Rule:** All text inputs have a max-length of 255 characters unless specified otherwise. A `*` sign will be used to indicate mandatory fields (according to the [assumption](#initial-state-flowchart)).
 
 | Field Name | Type | Required | Default State | Validation / Notes |
 | :--- | :--- | :---: | :--- | :--- |
