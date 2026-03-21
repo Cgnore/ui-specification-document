@@ -159,7 +159,7 @@ The Table Header displays column titles and gives the user the ability to manipu
   * **State:** Always **Active** to ensure the end-user can clear the form at any time.
   * **Action (`onClick` / `onReset`):** Clears all form fields, strictly resetting them to their **Initial States**.
 
-  [↑ Return to Header: New User Button](#11-new-user-button)
+  [↑ Return to Header Components](#header-components)
   <br>
 </details>
 <details>
@@ -179,7 +179,7 @@ The "Save User" button triggers submission process for creating new user.
       * **UI State:** The form is NOT cleared; it stays with the user's last inputs.
       * **Feedback:** An error toast message appears.
   
-  [↑ Return to Header: Save User Button](#13-save-user-button)
+  [↑ Return to Header Components](#header-components)
   <br>
 </details>
 
